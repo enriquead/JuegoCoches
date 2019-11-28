@@ -12,6 +12,7 @@ class GameLayer extends Layer {
         this.enemigos = [];
         this.oilPuddles = [];
         this.enemigosDiagonales = [];
+        this.vidasExtra = [];
 
         this.fondo = new Fondo(imagenes.fondo1,480*0.5,320*0.5);
         this.cargarMapa("res/"+nivelActual+".txt");
@@ -61,9 +62,12 @@ class GameLayer extends Layer {
                 reproducirEfecto(efectos.resbalar);
                 this.jugador.golpeado();
                 this.vidas.valor = this.jugador.vidas;
+                this.oilPuddles.splice(i,1);
+                i = i-1;
                 if (this.jugador.vidas <= 0){
                     this.iniciar();
                 }
+
             }
         }
         for (var i=0; i < this.enemigosDiagonales.length; i++){
@@ -72,6 +76,14 @@ class GameLayer extends Layer {
                     this.enemigosDiagonales[i].vy = this.enemigosDiagonales[i].vy * -1;
                 }
 
+            }
+        }
+        for (var i=0; i < this.vidasExtra.length; i++){
+            if ( this.jugador.colisiona(this.vidasExtra[i])){
+                this.jugador.vidas++;
+                this.vidas.valor = this.jugador.vidas;
+                this.vidasExtra.splice(i,1);
+                i = i-1;
             }
         }
 
@@ -94,6 +106,9 @@ class GameLayer extends Layer {
         }
         for (var i=0; i < this.enemigosDiagonales.length; i++){
             this.enemigosDiagonales[i].dibujar(this.scrollX);
+        }
+        for (var i=0; i < this.vidasExtra.length; i++){
+            this.vidasExtra[i].dibujar(this.scrollX);
         }
         this.fondoVidas.dibujar();
         this.vidas.dibujar();
@@ -148,7 +163,7 @@ class GameLayer extends Layer {
                 break;
             case "M":
                 this.meta = new ElementoEstatico(imagenes.meta, x,y);
-                this.meta.y = this.meta.y - this.meta.alto/2;
+                //this.meta.y = this.meta.y - this.meta.alto/2;
                 break;
             case "O":
                 var oilPuddle = new ElementoEstatico(imagenes.aceite,x,y);
@@ -156,10 +171,17 @@ class GameLayer extends Layer {
                 this.oilPuddles.push(oilPuddle);
                 break
             case "D":
-                var enemigoDiagonal = new EnemigoDiagonal(x,y)
+                var enemigoDiagonal = new EnemigoDiagonal(x,y);
                 enemigoDiagonal.y = enemigoDiagonal.y - enemigoDiagonal.alto/2;
                 this.enemigosDiagonales.push(enemigoDiagonal);
                 break;
+            case "V":
+                var vidaExtra = new ElementoEstatico(imagenes.corazon,x,y);
+                vidaExtra.y = vidaExtra.y - vidaExtra.alto/2;
+                this.vidasExtra.push(vidaExtra);
+                break
+
+
 
 
 
