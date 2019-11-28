@@ -17,10 +17,16 @@ class Jugador extends Modelo {
         if (this.tiempoInvulnerable > 0 ){
             this.tiempoInvulnerable --;
         }
-        console.log(this.tiempoInvulnerable);
         this.animacion.actualizar();
         this.x = this.x + this.vx;
         this.y = this.y + this.vy;
+        // Controlar que el jugador no se sale
+        if(this.y - this.alto/2 <0){
+            this.y = (this.alto/2);
+        }
+        if(this.y + this.alto/2 > 320){
+            this.y = 320 - this.alto/2;
+        }
     }
 
     moverY(direccion){
