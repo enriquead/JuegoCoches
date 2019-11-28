@@ -8,7 +8,7 @@ class EnemigoRectilineo extends Modelo {
         this.animacion = this.aMover;
 
         this.vy = 0;
-        this.vx = 3;
+        this.vx = 2;
     }
 
     actualizar (){

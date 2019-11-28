@@ -14,7 +14,7 @@ class GameLayer extends Layer {
 
         this.fondo = new Fondo(imagenes.fondo1,480*0.5,320*0.5);
         this.cargarMapa("res/"+nivelActual+".txt");
-        this.vidas = new Texto(this.jugador.vidas,480*0.9,320*0.07 );
+        this.vidas = new Texto(this.jugador.vidas,480*0.9,320*0.1 );
     }
 
     actualizar (){
@@ -36,8 +36,21 @@ class GameLayer extends Layer {
         // Colisiones
         for (var i=0; i < this.enemigos.length; i++){
             if ( this.jugador.colisiona(this.enemigos[i])){
-                reproducirEfecto(efectos.explosion);
-                this.iniciar();
+                if(this.jugador.tiempoInvulnerable<=0){
+                    reproducirEfecto(efectos.explosion);
+                    this.iniciar();
+                }
+
+            }
+        }
+        for (var i=0; i < this.oilPuddles.length; i++){
+            if ( this.jugador.colisiona(this.oilPuddles[i]) && this.jugador.tiempoInvulnerable<=0){
+                reproducirEfecto(efectos.resbalar);
+                this.jugador.golpeado();
+                this.vidas.valor = this.jugador.vidas;
+                if (this.jugador.vidas <= 0){
+                    this.iniciar();
+                }
             }
         }
 

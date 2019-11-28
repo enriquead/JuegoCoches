@@ -7,16 +7,17 @@ class Jugador extends Modelo {
             this.ancho, this.alto, 5, 6);
         // Ref a la animación actual
         this.animacion = this.aMover;
-        this.vx = 5; //VelocidadX no controlable por el jugador
+        this.vx = 6; //VelocidadX no controlable por el jugador
         this.vy = 0; //VelocidadY controlable por jugador
         this.vidas = 3;
+        this.tiempoInvulnerable = 0;
     }
 
     actualizar(){
         if (this.tiempoInvulnerable > 0 ){
             this.tiempoInvulnerable --;
         }
-
+        console.log(this.tiempoInvulnerable);
         this.animacion.actualizar();
         this.x = this.x + this.vx;
         this.y = this.y + this.vy;
