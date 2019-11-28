@@ -15,7 +15,10 @@ var imagenes = {
     corazon: "res/corazon.png",
     aceite: "res/oil_puddle.png",
     coche_diagonal : "res/coche_1.png",
-    animacion_enemigo_diagonal: "res/animacion_coche.png"
+    animacion_enemigo_diagonal: "res/animacion_coche.png",
+    jabali: "res/JabaliCompleto.png",
+    jabali_Arriba:"res/jabalis2.png",
+    jabali_Abajo:"res/Jabali1.png",
 };
 
 var rutasImagenes = Object.values(imagenes);

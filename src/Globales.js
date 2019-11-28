@@ -1,2 +1,2 @@
-var nivelActual = 0;
-var nivelMaximo = 2;
+let nivelActual = 0;
+const nivelMaximo = 2;
