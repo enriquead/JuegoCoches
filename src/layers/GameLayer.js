@@ -7,6 +7,9 @@ class GameLayer extends Layer {
 
     iniciar() {
         reproducirMusica();
+        this.botonArriba = new Boton(imagenes.flecha_Arriba,480*0.1,320*0.3);
+        this.botonAbajo = new Boton(imagenes.flecha_Abajo,480*0.1,320*0.7);
+
         this.fondoVidas = new Fondo(imagenes.corazon,480*0.85,320*0.08);
 
         this.enemigos = [];
@@ -145,8 +148,14 @@ class GameLayer extends Layer {
         for (var i=0; i < this.animales.length; i++){
             this.animales[i].dibujar(this.scrollX);
         }
+        //HUD
         this.fondoVidas.dibujar();
         this.vidas.dibujar();
+        if ( !this.pausa && entrada == entradas.pulsaciones) {
+            this.botonArriba.dibujar();
+            this.botonAbajo.dibujar();
+        }
+
 
     }
 
@@ -227,7 +236,35 @@ class GameLayer extends Layer {
 
         }
     }
+    calcularPulsaciones(pulsaciones){
+        // Suponemos botones no estan pulsados
+        this.botonArriba.pulsado = false;
+        this.botonAbajo.pulsado = false;
+
+        for(var i=0; i < pulsaciones.length; i++){
+            if (this.botonArriba.contienePunto(pulsaciones[i].x , pulsaciones[i].y) ){
+                this.botonArriba.pulsado = true;
+                if ( pulsaciones[i].tipo == tipoPulsacion.inicio) {
+                    controles.moverY = 1;
+                }
+            }
+
+            if (this.botonAbajo.contienePunto(pulsaciones[i].x , pulsaciones[i].y) ){
+                this.botonAbajo.pulsado = true;
+                if ( pulsaciones[i].tipo == tipoPulsacion.inicio) {
+                    controles.moverY = -1;
+                }
+            }
+
+        }
+        if ( !this.botonAbajo.pulsado && !this.botonArriba.pulsado ){
+            controles.moverY = 0;
+        }
+
+
+    }
 
 
 
-}
+
+                }

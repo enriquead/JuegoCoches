@@ -19,6 +19,10 @@ var imagenes = {
     jabali: "res/JabaliCompleto.png",
     jabali_Arriba:"res/jabalis2.png",
     jabali_Abajo:"res/Jabali1.png",
+    flecha_Abajo: "res/flecha_abajo.png",
+    flecha_Arriba: "res/flecha_arriba.png",
+    menu_principal: "res/menu_titulo.png",
+    boton_jugar: "res/boton_jugar.png",
 };
 
 var rutasImagenes = Object.values(imagenes);
