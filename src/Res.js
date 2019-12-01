@@ -23,6 +23,10 @@ var imagenes = {
     flecha_Arriba: "res/flecha_arriba.png",
     menu_principal: "res/menu_titulo.png",
     boton_jugar: "res/boton_jugar.png",
+    como_jugar: "res/como_jugar.png",
+    has_ganado: "res/has_ganado.png",
+    has_perdido: "res/has_perdido.png",
+    victoria:"res/victoria.png",
 };
 
 var rutasImagenes = Object.values(imagenes);

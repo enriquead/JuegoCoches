@@ -2,6 +2,8 @@ class GameLayer extends Layer {
 
     constructor() {
         super();
+        this.mensaje = new Boton(imagenes.como_jugar,480/2,320/2);
+        this.pausa = true;
         this.iniciar();
     }
 
@@ -12,7 +14,8 @@ class GameLayer extends Layer {
 
         this.fondoVidas = new Fondo(imagenes.corazon,480*0.85,320*0.08);
 
-        this.enemigos = [];
+        this.enemigosDestructores = [];
+        this.enemigosRectilineos = [];
         this.oilPuddles = [];
         this.enemigosDiagonales = [];
         this.vidasExtra = [];
@@ -24,12 +27,19 @@ class GameLayer extends Layer {
     }
 
     actualizar (){
+        if(this.pausa){
+            return;
+        }
 
         if (this.meta.colisiona(this.jugador)) {
-            console.log("Meta");
+            this.pausa = true;
             nivelActual++;
             if (nivelActual > nivelMaximo) {
                 nivelActual = 0;
+                this.mensaje = new Boton(imagenes.victoria,480/2,320/2);
+            }
+            else{
+                this.mensaje = new Boton(imagenes.has_ganado,480/2,320/2);
             }
             this.iniciar();
         }
@@ -37,8 +47,8 @@ class GameLayer extends Layer {
         this.fondo.vx = -7;
         this.fondo.actualizar();
         this.jugador.actualizar();
-        for (var i=0; i < this.enemigos.length; i++){
-            this.enemigos[i].actualizar();
+        for (var i=0; i < this.enemigosRectilineos.length; i++){
+            this.enemigosRectilineos[i].actualizar();
         }
         for (var i=0; i < this.enemigosDiagonales.length; i++){
             this.enemigosDiagonales[i].actualizar();
@@ -47,27 +57,11 @@ class GameLayer extends Layer {
             this.animales[i].actualizar();
         }
         // Colisiones
-        for (var i=0; i < this.enemigos.length; i++){
-            if ( this.jugador.colisiona(this.enemigos[i])){
+        for (var i=0; i < this.enemigosDestructores.length; i++){
+            if ( this.jugador.colisiona(this.enemigosDestructores[i])){
                 if(this.jugador.tiempoInvulnerable<=0){
-                    reproducirEfecto(efectos.explosion);
-                    this.iniciar();
-                }
-
-            }
-        }
-        for (var i=0; i < this.enemigosDiagonales.length; i++){
-            if ( this.jugador.colisiona(this.enemigosDiagonales[i])){
-                if(this.jugador.tiempoInvulnerable<=0){
-                    reproducirEfecto(efectos.explosion);
-                    this.iniciar();
-                }
-
-            }
-        }
-        for (var i=0; i < this.animales.length; i++){
-            if ( this.jugador.colisiona(this.animales[i])){
-                if(this.jugador.tiempoInvulnerable<=0){
+                    this.pausa = true;
+                    this.mensaje = this.mensaje = new Boton(imagenes.has_perdido,480/2,320/2);
                     reproducirEfecto(efectos.explosion);
                     this.iniciar();
                 }
@@ -82,33 +76,28 @@ class GameLayer extends Layer {
                 this.oilPuddles.splice(i,1);
                 i = i-1;
                 if (this.jugador.vidas <= 0){
+                    this.pausa = true;
+                    this.mensaje = this.mensaje = new Boton(imagenes.has_perdido,480/2,320/2);
                     this.iniciar();
                 }
 
             }
         }
         for (var i=0; i < this.enemigosDiagonales.length; i++){
-            for  (var j=0; j < this.enemigos.length; j++){
-                if ( this.enemigosDiagonales[i].colisiona(this.enemigos[j])){
-                    this.enemigosDiagonales[i].vy = this.enemigosDiagonales[i].vy * -1;
+            for  (var j=0; j < this.enemigosDestructores.length; j++){
+                if ( this.enemigosDiagonales[i].colisiona(this.enemigosDestructores[j]) &&
+                    this.enemigosDiagonales[i]!== this.enemigosDestructores[j]){
+                        this.enemigosDiagonales[i].vy = this.enemigosDiagonales[i].vy * -1;
                 }
 
             }
         }
         for (var i=0; i < this.animales.length; i++){
-            for  (var j=0; j < this.enemigos.length; j++){
-                if ( this.animales[i].colisiona(this.enemigos[j])){
-                    this.animales[i].vy = this.animales[i].vy * -1;
-                    this.animales[i].cambiarAnimacion();
-                }
-
-            }
-        }
-        for (var i=0; i < this.animales.length; i++){
-            for  (var j=0; j < this.enemigosDiagonales.length; j++){
-                if ( this.animales[i].colisiona(this.enemigosDiagonales[j])){
-                    this.animales[i].vy = this.animales[i].vy * -1;
-                    this.animales[i].cambiarAnimacion();
+            for  (var j=0; j < this.enemigosDestructores.length; j++){
+                if ( this.animales[i].colisiona(this.enemigosDestructores[j]) &&
+                    this.animales[i] !==this.enemigosDestructores[j] ){
+                        this.animales[i].vy = this.animales[i].vy * -1;
+                        this.animales[i].cambiarAnimacion();
                 }
 
             }
@@ -136,8 +125,8 @@ class GameLayer extends Layer {
             this.oilPuddles[i].dibujar(this.scrollX);
         }
         this.jugador.dibujar(this.scrollX);
-        for (var i=0; i < this.enemigos.length; i++){
-            this.enemigos[i].dibujar(this.scrollX);
+        for (var i=0; i < this.enemigosRectilineos.length; i++){
+            this.enemigosRectilineos[i].dibujar(this.scrollX);
         }
         for (var i=0; i < this.enemigosDiagonales.length; i++){
             this.enemigosDiagonales[i].dibujar(this.scrollX);
@@ -155,11 +144,19 @@ class GameLayer extends Layer {
             this.botonArriba.dibujar();
             this.botonAbajo.dibujar();
         }
+        if(this.pausa){
+            this.mensaje.dibujar();
+        }
 
 
     }
 
     procesarControles() {
+        if (controles.continuar){
+            controles.continuar = false;
+            this.pausa = false;
+        }
+
         // Eje Y
         if ( controles.moverY > 0 ){
             this.jugador.moverY(-1);
@@ -203,7 +200,8 @@ class GameLayer extends Layer {
             case "R":
                 var enemigo = new EnemigoRectilineo(x,y);
                 enemigo.y = enemigo.y - enemigo.alto/2;
-                this.enemigos.push(enemigo);
+                this.enemigosRectilineos.push(enemigo);
+                this.enemigosDestructores.push(enemigo);
                 break;
             case "M":
                 this.meta = new ElementoEstatico(imagenes.meta, x,y);
@@ -218,6 +216,7 @@ class GameLayer extends Layer {
                 var enemigoDiagonal = new EnemigoDiagonal(x,y);
                 enemigoDiagonal.y = enemigoDiagonal.y - enemigoDiagonal.alto/2;
                 this.enemigosDiagonales.push(enemigoDiagonal);
+                this.enemigosDestructores.push(enemigoDiagonal);
                 break;
             case "V":
                 var vidaExtra = new ElementoEstatico(imagenes.corazon,x,y);
@@ -228,6 +227,7 @@ class GameLayer extends Layer {
                 var animal = new EnemigoAnimal(x,y);
                 animal.y = animal.y - animal.alto/2;
                 this.animales.push(animal);
+                this.enemigosDestructores.push(animal);
                 break;
 
 
@@ -240,8 +240,16 @@ class GameLayer extends Layer {
         // Suponemos botones no estan pulsados
         this.botonArriba.pulsado = false;
         this.botonAbajo.pulsado = false;
+        // Suponemos a false
+        controles.continuar = false;
+
 
         for(var i=0; i < pulsaciones.length; i++){
+            // MUY SIMPLE SIN BOTON cualquier click en pantalla lo activa
+            if(pulsaciones[i].tipo == tipoPulsacion.inicio){
+                controles.continuar = true;
+            }
+
             if (this.botonArriba.contienePunto(pulsaciones[i].x , pulsaciones[i].y) ){
                 this.botonArriba.pulsado = true;
                 if ( pulsaciones[i].tipo == tipoPulsacion.inicio) {
