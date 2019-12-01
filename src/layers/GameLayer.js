@@ -46,22 +46,23 @@ class GameLayer extends Layer {
         this.fondo.vx = -7;
         this.fondo.actualizar();
         this.jugador.actualizar();
-        for (var i=0; i < this.enemigosDestructores.length; i++){
+        for (let i=0; i < this.enemigosDestructores.length; i++){
             this.enemigosDestructores[i].actualizar();
         }
         // Colisiones
-        for (var i=0; i < this.enemigosDestructores.length; i++){
-            if ( this.jugador.colisiona(this.enemigosDestructores[i])){
-                if(this.jugador.tiempoInvulnerable<=0){
-                    this.pausa = true;
-                    this.mensaje = this.mensaje = new Boton(imagenes.has_perdido,480/2,320/2);
-                    reproducirEfecto(efectos.explosion);
-                    this.iniciar();
-                }
+        for (let i=0; i < this.enemigosDestructores.length; i++){
+            if ( this.jugador.colisiona(this.enemigosDestructores[i]) &&
+                this.enemigosDestructores[i].estado == estados.moviendo){
+                    if(this.jugador.tiempoInvulnerable<=0){
+                        this.pausa = true;
+                        this.mensaje = this.mensaje = new Boton(imagenes.has_perdido,480/2,320/2);
+                        reproducirEfecto(efectos.explosion);
+                        this.iniciar();
+                    }
 
             }
         }
-        for (var i=0; i < this.oilPuddles.length; i++){
+        for (let i=0; i < this.oilPuddles.length; i++){
             if ( this.jugador.colisiona(this.oilPuddles[i]) && this.jugador.tiempoInvulnerable<=0){
                 reproducirEfecto(efectos.resbalar);
                 this.jugador.golpeado();
@@ -76,7 +77,7 @@ class GameLayer extends Layer {
 
             }
         }
-        for (var i=0; i < this.enemigosDestructores.length; i++){
+        for (let i=0; i < this.enemigosDestructores.length; i++){
             for  (var j=0; j < this.enemigosDestructores.length; j++){
                 if ( this.enemigosDestructores[i].colisiona(this.enemigosDestructores[j]) &&
                     this.enemigosDestructores[i]!== this.enemigosDestructores[j]){
@@ -87,7 +88,7 @@ class GameLayer extends Layer {
 
             }
         }
-        for (var i=0; i < this.vidasExtra.length; i++){
+        for (let i=0; i < this.vidasExtra.length; i++){
             if ( this.jugador.colisiona(this.vidasExtra[i])){
                 this.jugador.vidas++;
                 this.vidas.valor = this.jugador.vidas;
@@ -95,15 +96,22 @@ class GameLayer extends Layer {
                 i = i-1;
             }
         }
-        for (var i=0; i < this.bombas.length; i++){
+        for (let i=0; i < this.bombas.length; i++){
             if ( this.bombas[i] != null && this.jugador.colisiona(this.bombas[i])) {
+                reproducirEfecto(efectos.explosion);
                 for (var j=0; j < this.enemigosDestructores.length; j++){
                     if(this.enemigosDestructores[j].estaEnPantalla()){
-                        this.enemigosDestructores.splice(j, 1);
-                        j = j-1;
+                        this.enemigosDestructores[j].explotado();
                     }
                 }
                 this.bombas.splice(i, 1);
+                i = i-1;
+            }
+        }
+        for (let i=0; i < this.enemigosDestructores.length; i++){
+            if ( this.enemigosDestructores[i] != null &&
+                this.enemigosDestructores[i].estado == estados.muerto ) {
+                this.enemigosDestructores.splice(i, 1);
                 i = i-1;
             }
         }

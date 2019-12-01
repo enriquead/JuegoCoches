@@ -11,7 +11,7 @@ var imagenes = {
     meta : "res/meta.png",
     enemigo_rectilineo: "res/cani_1.png",
     animacion_enemigo_rectilineo : "res/animacion_cani.png",
-    animacion_crash_enemigo_rectilineo: "res/animacion_cani_crash.png",
+    animacion_crash: "res/animacion_cani_crash.png",
     corazon: "res/corazon.png",
     aceite: "res/oil_puddle.png",
     coche_diagonal : "res/coche_1.png",

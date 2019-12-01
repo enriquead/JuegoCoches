@@ -1,12 +1,15 @@
 class EnemigoAnimal extends Modelo {
 
     constructor(x, y) {
-        super(imagenes.jabali, x, y)
+        super(imagenes.jabali, x, y);
+        this.estado = estados.moviendo;
         this.aMoverArriba = new Animacion(imagenes.jabali_Arriba,
             this.ancho, this.alto, 2, 3);
         // Ref a la animación actual
         this.aMoverAbajo = new Animacion(imagenes.jabali_Abajo,
             this.ancho, this.alto, 2, 3);
+        this.aExplosion = new Animacion(imagenes.animacion_crash,this.ancho,
+            this.alto,5,6,this.finAnimacionMorir.bind(this));
         this.animacion = this.aMoverAbajo;
 
         this.vy = 3;
@@ -15,6 +18,14 @@ class EnemigoAnimal extends Modelo {
 
     actualizar (){
         this.animacion.actualizar();
+        switch (this.estado){
+            case estados.moviendo:
+                this.animacion = this.animacion;
+                break;
+            case estados.muriendo:
+                this.animacion = this.aExplosion;
+                break;
+        }
         this.y = this.y + this.vy;
         // Evitar que se salga de pantalla
         if(this.y - this.alto/2 <0){
@@ -37,6 +48,16 @@ class EnemigoAnimal extends Modelo {
         else
             this.animacion = this.aMoverAbajo;
 
+    }
+
+    finAnimacionMorir(){
+        this.estado = estados.muerto;
+    }
+
+    explotado(){
+        if ( this.estado != estados.muriendo ){
+            this.estado = estados.muriendo;
+        }
     }
 
 
