@@ -29,9 +29,9 @@ class Jugador extends Modelo {
         this.animacion.actualizar();
         this.x = this.x + this.vx;
         this.y = this.y + this.vy;
-        // Controlar que el jugador no se sale
-        if(this.y - this.alto/2 <0){
-            this.y = (this.alto/2);
+        // Controlar que el jugador no se sale, 0.1 es un margen para que no se salga de la carretera
+        if(this.y - this.alto/2 <320*0.1){
+            this.y = 320*0.1 + (this.alto/2);
         }
         if(this.y + this.alto/2 > 320){
             this.y = 320 - this.alto/2;
