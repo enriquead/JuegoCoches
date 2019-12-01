@@ -13,16 +13,19 @@ class GameLayer extends Layer {
         this.botonAbajo = new Boton(imagenes.flecha_Abajo,480*0.1,320*0.7);
 
         this.fondoVidas = new Fondo(imagenes.corazon,480*0.85,320*0.08);
+        this.fondoPuntos = new Fondo(imagenes.lata,480*0.5,320*0.08);
 
         this.enemigosDestructores = [];
         this.oilPuddles = [];
         this.bombas = [];
         this.vidasExtra = [];
+        this.latas=[];
 
-
+        this.marcadorNivel = new Texto("Nivel: "+(nivelActual+1),480*0.1,320*0.1);
         this.fondo = new Fondo(imagenes.fondo1,480*0.5,320*0.5);
         this.cargarMapa("res/"+nivelActual+".txt");
         this.vidas = new Texto(this.jugador.vidas,480*0.9,320*0.1 );
+        this.puntos = new Texto(this.jugador.puntos,480*0.55,320*0.1);
     }
 
     actualizar (){
@@ -96,6 +99,14 @@ class GameLayer extends Layer {
                 i = i-1;
             }
         }
+        for (let i=0; i < this.latas.length; i++){
+            if ( this.jugador.colisiona(this.latas[i])){
+                this.jugador.puntos++;
+                this.puntos.valor = this.jugador.puntos;
+                this.latas.splice(i,1);
+                i = i-1;
+            }
+        }
         for (let i=0; i < this.bombas.length; i++){
             if ( this.bombas[i] != null && this.jugador.colisiona(this.bombas[i])) {
                 reproducirEfecto(efectos.explosion);
@@ -126,22 +137,28 @@ class GameLayer extends Layer {
         this.calcularScroll();
         this.fondo.dibujar();
         this.meta.dibujar(this.scrollX);
-        for (var i=0; i < this.oilPuddles.length; i++){
+        for (let i=0; i < this.oilPuddles.length; i++){
             this.oilPuddles[i].dibujar(this.scrollX);
         }
         this.jugador.dibujar(this.scrollX);
-        for (var i=0; i < this.enemigosDestructores.length; i++){
+        for (let i=0; i < this.enemigosDestructores.length; i++){
             this.enemigosDestructores[i].dibujar(this.scrollX);
         }
-        for (var i=0; i < this.vidasExtra.length; i++){
+        for (let i=0; i < this.vidasExtra.length; i++){
             this.vidasExtra[i].dibujar(this.scrollX);
         }
-        for (var i=0; i < this.bombas.length; i++){
+        for (let i=0; i < this.latas.length; i++){
+            this.latas[i].dibujar(this.scrollX);
+        }
+        for (let i=0; i < this.bombas.length; i++){
             this.bombas[i].dibujar(this.scrollX);
         }
         //HUD
         this.fondoVidas.dibujar();
+        this.fondoPuntos.dibujar();
         this.vidas.dibujar();
+        this.puntos.dibujar();
+        this.marcadorNivel.dibujar();
         if ( !this.pausa && entrada == entradas.pulsaciones) {
             this.botonArriba.dibujar();
             this.botonAbajo.dibujar();
@@ -232,6 +249,11 @@ class GameLayer extends Layer {
                 var bomba = new ElementoEstatico(imagenes.bomba,x,y);
                 bomba.y = bomba.y - bomba.alto/2;
                 this.bombas.push(bomba);
+                break;
+            case "L":
+                var lata = new ElementoEstatico(imagenes.lata,x,y);
+                lata.y = lata.y - lata.alto/2;
+                this.latas.push(lata);
                 break;
 
 

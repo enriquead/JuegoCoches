@@ -10,6 +10,7 @@ class Jugador extends Modelo {
         this.vx = 6; //VelocidadX no controlable por el jugador
         this.vy = 0; //VelocidadY controlable por jugador
         this.vidas = 3;
+        this.puntos = 0;
         this.tiempoInvulnerable = 0;
     }
 
