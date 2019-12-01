@@ -6,6 +6,7 @@ class Modelo {
         this.y = y;
         this.ancho = this.imagen.width;
         this.alto = this.imagen.height;
+
     }
 
     dibujar (scrollX){
@@ -23,6 +24,8 @@ class Modelo {
             && this.y + this.alto/2  >= (modelo.y - modelo.alto/2) + margenError
             && (this.y - this.alto/2) + margenError<= (modelo.y + modelo.alto/2) ){
                colisiona = true;
+
+
         }
         return colisiona;
     }

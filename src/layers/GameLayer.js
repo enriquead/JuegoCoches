@@ -98,12 +98,20 @@ class GameLayer extends Layer {
         for (let i=0; i < this.enemigosDestructores.length; i++){
             for  (var j=0; j < this.enemigosDestructores.length; j++){
                 if ( this.enemigosDestructores[i].colisiona(this.enemigosDestructores[j]) &&
-                    this.enemigosDestructores[i]!== this.enemigosDestructores[j]){
-                        this.enemigosDestructores[i].vy = this.enemigosDestructores[i].vy * -1;
+                    this.enemigosDestructores[i]!== this.enemigosDestructores[j] &&
+                    this.enemigosDestructores[j].estado == estados.moviendo
+                    &&  this.enemigosDestructores[i].estado == estados.moviendo){
+                        this.enemigosDestructores[i].vy *= -1;
                         this.enemigosDestructores[i].cambiarAnimacionEjeY();
-
+                        //Para evitar enganchones con coches que circulan en linea recta, si no quedarían enganchados
+                        // Ya que cambiaría su velocidad en el eje Y constantemente (siempre en colisión)
+                        if(this.enemigosDestructores[i] instanceof EnemigoAnimal || this.enemigosDestructores[i] instanceof EnemigoDiagonal){
+                            if(this.enemigosDestructores[i].vy >0)
+                                this.enemigosDestructores[i].y+=1;
+                            else
+                                this.enemigosDestructores[i].y-=1;
+                        }
                 }
-
             }
         }
         for (let i=0; i < this.vidasExtra.length; i++){

@@ -33,10 +33,14 @@ class EnemigoDiagonal extends EnemigoBase {
 
         // Evitar que se salga de pantalla
         if(this.y - this.alto/2 < 320*0.1){
-            this.vy = - (this.vy);
+            //Para evitar enganchones
+            this.y +=1;
+            this.vy *=-1 ;
         }
         if(this.y + this.alto/2 > 320){
-            this.vy = - (this.vy);
+            //Para evitar enganchones
+            this.y -=1;
+            this.vy *= -1 ;
         }
     }
 
