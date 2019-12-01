@@ -15,11 +15,10 @@ class GameLayer extends Layer {
         this.fondoVidas = new Fondo(imagenes.corazon,480*0.85,320*0.08);
 
         this.enemigosDestructores = [];
-        this.enemigosRectilineos = [];
         this.oilPuddles = [];
-        this.enemigosDiagonales = [];
+        this.bombas = [];
         this.vidasExtra = [];
-        this.animales = [];
+
 
         this.fondo = new Fondo(imagenes.fondo1,480*0.5,320*0.5);
         this.cargarMapa("res/"+nivelActual+".txt");
@@ -47,14 +46,8 @@ class GameLayer extends Layer {
         this.fondo.vx = -7;
         this.fondo.actualizar();
         this.jugador.actualizar();
-        for (var i=0; i < this.enemigosRectilineos.length; i++){
-            this.enemigosRectilineos[i].actualizar();
-        }
-        for (var i=0; i < this.enemigosDiagonales.length; i++){
-            this.enemigosDiagonales[i].actualizar();
-        }
-        for (var i=0; i < this.animales.length; i++){
-            this.animales[i].actualizar();
+        for (var i=0; i < this.enemigosDestructores.length; i++){
+            this.enemigosDestructores[i].actualizar();
         }
         // Colisiones
         for (var i=0; i < this.enemigosDestructores.length; i++){
@@ -83,21 +76,13 @@ class GameLayer extends Layer {
 
             }
         }
-        for (var i=0; i < this.enemigosDiagonales.length; i++){
+        for (var i=0; i < this.enemigosDestructores.length; i++){
             for  (var j=0; j < this.enemigosDestructores.length; j++){
-                if ( this.enemigosDiagonales[i].colisiona(this.enemigosDestructores[j]) &&
-                    this.enemigosDiagonales[i]!== this.enemigosDestructores[j]){
-                        this.enemigosDiagonales[i].vy = this.enemigosDiagonales[i].vy * -1;
-                }
+                if ( this.enemigosDestructores[i].colisiona(this.enemigosDestructores[j]) &&
+                    this.enemigosDestructores[i]!== this.enemigosDestructores[j]){
+                        this.enemigosDestructores[i].vy = this.enemigosDestructores[i].vy * -1;
+                        this.enemigosDestructores[i].cambiarAnimacion();
 
-            }
-        }
-        for (var i=0; i < this.animales.length; i++){
-            for  (var j=0; j < this.enemigosDestructores.length; j++){
-                if ( this.animales[i].colisiona(this.enemigosDestructores[j]) &&
-                    this.animales[i] !==this.enemigosDestructores[j] ){
-                        this.animales[i].vy = this.animales[i].vy * -1;
-                        this.animales[i].cambiarAnimacion();
                 }
 
             }
@@ -107,6 +92,18 @@ class GameLayer extends Layer {
                 this.jugador.vidas++;
                 this.vidas.valor = this.jugador.vidas;
                 this.vidasExtra.splice(i,1);
+                i = i-1;
+            }
+        }
+        for (var i=0; i < this.bombas.length; i++){
+            if ( this.bombas[i] != null && this.jugador.colisiona(this.bombas[i])) {
+                for (var j=0; j < this.enemigosDestructores.length; j++){
+                    if(this.enemigosDestructores[j].estaEnPantalla()){
+                        this.enemigosDestructores.splice(j, 1);
+                        j = j-1;
+                    }
+                }
+                this.bombas.splice(i, 1);
                 i = i-1;
             }
         }
@@ -125,17 +122,14 @@ class GameLayer extends Layer {
             this.oilPuddles[i].dibujar(this.scrollX);
         }
         this.jugador.dibujar(this.scrollX);
-        for (var i=0; i < this.enemigosRectilineos.length; i++){
-            this.enemigosRectilineos[i].dibujar(this.scrollX);
-        }
-        for (var i=0; i < this.enemigosDiagonales.length; i++){
-            this.enemigosDiagonales[i].dibujar(this.scrollX);
+        for (var i=0; i < this.enemigosDestructores.length; i++){
+            this.enemigosDestructores[i].dibujar(this.scrollX);
         }
         for (var i=0; i < this.vidasExtra.length; i++){
             this.vidasExtra[i].dibujar(this.scrollX);
         }
-        for (var i=0; i < this.animales.length; i++){
-            this.animales[i].dibujar(this.scrollX);
+        for (var i=0; i < this.bombas.length; i++){
+            this.bombas[i].dibujar(this.scrollX);
         }
         //HUD
         this.fondoVidas.dibujar();
@@ -200,7 +194,6 @@ class GameLayer extends Layer {
             case "R":
                 var enemigo = new EnemigoRectilineo(x,y);
                 enemigo.y = enemigo.y - enemigo.alto/2;
-                this.enemigosRectilineos.push(enemigo);
                 this.enemigosDestructores.push(enemigo);
                 break;
             case "M":
@@ -215,7 +208,6 @@ class GameLayer extends Layer {
             case "D":
                 var enemigoDiagonal = new EnemigoDiagonal(x,y);
                 enemigoDiagonal.y = enemigoDiagonal.y - enemigoDiagonal.alto/2;
-                this.enemigosDiagonales.push(enemigoDiagonal);
                 this.enemigosDestructores.push(enemigoDiagonal);
                 break;
             case "V":
@@ -226,9 +218,14 @@ class GameLayer extends Layer {
             case "A":
                 var animal = new EnemigoAnimal(x,y);
                 animal.y = animal.y - animal.alto/2;
-                this.animales.push(animal);
                 this.enemigosDestructores.push(animal);
                 break;
+            case "B":
+                var bomba = new ElementoEstatico(imagenes.bomba,x,y);
+                bomba.y = bomba.y - bomba.alto/2;
+                this.bombas.push(bomba);
+                break;
+
 
 
 
@@ -275,4 +272,4 @@ class GameLayer extends Layer {
 
 
 
-                }
+}

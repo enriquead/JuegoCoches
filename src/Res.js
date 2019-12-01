@@ -27,6 +27,7 @@ var imagenes = {
     has_ganado: "res/has_ganado.png",
     has_perdido: "res/has_perdido.png",
     victoria:"res/victoria.png",
+    bomba: "res/bomba_normal.png"
 };
 
 var rutasImagenes = Object.values(imagenes);

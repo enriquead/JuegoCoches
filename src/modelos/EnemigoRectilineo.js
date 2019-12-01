@@ -19,6 +19,9 @@ class EnemigoRectilineo extends Modelo {
         scrollX = scrollX || 0;
         this.animacion.dibujar(this.x - scrollX, this.y);
     }
+    cambiarAnimacion(){
+
+    }
 
 
 

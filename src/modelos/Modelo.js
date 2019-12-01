@@ -27,6 +27,15 @@ class Modelo {
         return colisiona;
     }
 
+    estaEnPantalla(){
+        return ( (this.x - gameLayer.scrollX) -this.ancho/2 <= 480 &&
+            (this.x - gameLayer.scrollX) + this.ancho/2 >= 0 &&
+            this.y - this.alto/2 <= 320 &&
+            this.y + this.alto/2 >= 0
+        );
+
+    }
+
 
 
 }

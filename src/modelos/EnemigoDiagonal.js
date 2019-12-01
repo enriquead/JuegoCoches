@@ -29,6 +29,9 @@ class EnemigoDiagonal extends Modelo {
         this.animacion.dibujar(this.x - scrollX, this.y);
     }
 
+    cambiarAnimacion(){
+
+    }
 
 
 
