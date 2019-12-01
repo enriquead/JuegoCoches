@@ -1,4 +1,4 @@
-class EnemigoAnimal extends Modelo {
+class EnemigoAnimal extends EnemigoBase {
 
     constructor(x, y) {
         super(imagenes.jabali, x, y);
@@ -30,34 +30,20 @@ class EnemigoAnimal extends Modelo {
         // Evitar que se salga de pantalla
         if(this.y - this.alto/2 <0){
             this.vy = - (this.vy);
-            this.cambiarAnimacion();
+            this.cambiarAnimacionEjeY();
         }
         if(this.y + this.alto/2 > 320){
             this.vy = - (this.vy);
-            this.cambiarAnimacion();
+            this.cambiarAnimacionEjeY();
         }
     }
-    dibujar (scrollX){
-        scrollX = scrollX || 0;
-        this.animacion.dibujar(this.x - scrollX, this.y);
-    }
 
-    cambiarAnimacion(){
+    cambiarAnimacionEjeY(){
         if(this.animacion == this.aMoverAbajo)
             this.animacion = this.aMoverArriba;
         else
             this.animacion = this.aMoverAbajo;
 
-    }
-
-    finAnimacionMorir(){
-        this.estado = estados.muerto;
-    }
-
-    explotado(){
-        if ( this.estado != estados.muriendo ){
-            this.estado = estados.muriendo;
-        }
     }
 
     cambiarSentidoAnimacion(){

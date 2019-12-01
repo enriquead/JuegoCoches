@@ -1,4 +1,4 @@
-class EnemigoDiagonal extends Modelo {
+class EnemigoDiagonal extends EnemigoBase {
 
     constructor(x, y) {
         super(imagenes.coche_diagonal, x, y)
@@ -39,36 +39,5 @@ class EnemigoDiagonal extends Modelo {
             this.vy = - (this.vy);
         }
     }
-    dibujar (scrollX){
-        scrollX = scrollX || 0;
-        this.animacion.dibujar(this.x - scrollX, this.y);
-    }
-
-    cambiarAnimacion(){
-
-    }
-
-    finAnimacionMorir(){
-        this.estado = estados.muerto;
-    }
-
-    explotado(){
-        if ( this.estado != estados.muriendo ){
-            this.estado = estados.muriendo;
-        }
-    }
-
-    cambiarSentidoAnimacion(){
-        console.log("Cambiando animacion");
-        if(this.estado == estados.moviendo && this.animacion == this.aMover){
-            this.animacion = this.aMoverInversa;
-        }
-        else if(this.estado == estados.moviendo && this.animacion == this.aMoverInversa){
-            this.animacion = this.aMover;
-        }
-
-    }
-
-
 
 }

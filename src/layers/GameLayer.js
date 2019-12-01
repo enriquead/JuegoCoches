@@ -100,7 +100,7 @@ class GameLayer extends Layer {
                 if ( this.enemigosDestructores[i].colisiona(this.enemigosDestructores[j]) &&
                     this.enemigosDestructores[i]!== this.enemigosDestructores[j]){
                         this.enemigosDestructores[i].vy = this.enemigosDestructores[i].vy * -1;
-                        this.enemigosDestructores[i].cambiarAnimacion();
+                        this.enemigosDestructores[i].cambiarAnimacionEjeY();
 
                 }
 
