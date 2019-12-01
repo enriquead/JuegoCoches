@@ -1,14 +1,16 @@
 class Fondo extends Modelo{
     constructor(rutaImagen,x,y){
         super(rutaImagen,x,y);
+        this.route = rutaImagen;
         this.vx = 0;
     }
 
     actualizar(){
         if ( this.vx != 0) {
             if ( this.fondoAux == null){
+
                 this.fondoAux =
-                    new Fondo(imagenes.fondo1, this.x, this.y);
+                    new Fondo(this.route, this.x, this.y);
             }
 
             this.x = this.x + this.vx;

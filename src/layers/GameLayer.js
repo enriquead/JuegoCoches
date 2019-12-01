@@ -24,8 +24,23 @@ class GameLayer extends Layer {
         this.pinchos = [];
 
         this.marcadorNivel = new Texto("Nivel: "+(nivelActual+1),480*0.1,320*0.1);
-        this.fondo = new Fondo(imagenes.fondo1,480*0.5,320*0.5);
+
+
         this.cargarMapa("res/"+nivelActual+".txt");
+        switch (nivelActual) {
+            case 0:
+                this.fondo = new Fondo(imagenes.fondo1,480*0.5,320*0.5);
+                this.jugador.vx = 6;
+                break;
+            case 1:
+                this.fondo = new Fondo(imagenes.fondo2,480*0.5,320*0.5);
+                this.jugador.vx = 8;
+                break;
+            case 2:
+                this.fondo = new Fondo(imagenes.fondo3,480*0.5,320*0.5);
+                this.jugador.vx = 10;
+                break;
+        }
         this.vidas = new Texto(this.jugador.vidas,480*0.9,320*0.1 );
         this.puntos = new Texto(this.jugador.puntos,480*0.55,320*0.1);
     }
@@ -59,13 +74,10 @@ class GameLayer extends Layer {
         for (let i=0; i < this.enemigosDestructores.length; i++){
             if ( this.jugador.colisiona(this.enemigosDestructores[i]) &&
                 this.enemigosDestructores[i].estado == estados.moviendo){
-                    if(this.jugador.tiempoInvulnerable<=0){
-                        this.pausa = true;
-                        this.mensaje = this.mensaje = new Boton(imagenes.has_perdido,480/2,320/2);
-                        reproducirEfecto(efectos.explosion);
-                        this.iniciar();
-                    }
-
+                    this.pausa = true;
+                    this.mensaje = this.mensaje = new Boton(imagenes.has_perdido,480/2,320/2);
+                    reproducirEfecto(efectos.explosion);
+                    this.iniciar();
             }
         }
         for (let i=0; i < this.oilPuddles.length; i++){
