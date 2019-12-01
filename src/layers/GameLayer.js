@@ -20,6 +20,8 @@ class GameLayer extends Layer {
         this.bombas = [];
         this.vidasExtra = [];
         this.latas=[];
+        this.cambiosSentido = [];
+        this.pinchos = [];
 
         this.marcadorNivel = new Texto("Nivel: "+(nivelActual+1),480*0.1,320*0.1);
         this.fondo = new Fondo(imagenes.fondo1,480*0.5,320*0.5);
@@ -34,6 +36,7 @@ class GameLayer extends Layer {
         }
 
         if (this.meta.colisiona(this.jugador)) {
+            reproducirEfecto(efectos.goal);
             this.pausa = true;
             nivelActual++;
             if (nivelActual > nivelMaximo) {
@@ -107,6 +110,24 @@ class GameLayer extends Layer {
                 i = i-1;
             }
         }
+        for (let i=0; i < this.pinchos.length; i++){
+            if ( this.jugador.colisiona(this.pinchos[i])){
+                this.jugador.pinchado();
+                this.pinchos.splice(i,1);
+                i = i-1;
+            }
+        }
+        for (let i=0; i < this.cambiosSentido.length; i++){
+            if ( this.jugador.colisiona(this.cambiosSentido[i])){
+                for(let j=0;j<this.enemigosDestructores.length;j++){
+                    this.enemigosDestructores[j].vx *=-1;
+                    this.enemigosDestructores[j].cambiarSentidoAnimacion();
+                }
+
+                this.cambiosSentido.splice(i,1);
+                i = i-1;
+            }
+        }
         for (let i=0; i < this.bombas.length; i++){
             if ( this.bombas[i] != null && this.jugador.colisiona(this.bombas[i])) {
                 reproducirEfecto(efectos.explosion);
@@ -152,6 +173,12 @@ class GameLayer extends Layer {
         }
         for (let i=0; i < this.bombas.length; i++){
             this.bombas[i].dibujar(this.scrollX);
+        }
+        for (let i=0;i<this.cambiosSentido.length;i++){
+            this.cambiosSentido[i].dibujar(this.scrollX);
+        }
+        for (let i=0;i<this.pinchos.length;i++){
+            this.pinchos[i].dibujar(this.scrollX);
         }
         //HUD
         this.fondoVidas.dibujar();
@@ -255,12 +282,16 @@ class GameLayer extends Layer {
                 lata.y = lata.y - lata.alto/2;
                 this.latas.push(lata);
                 break;
-
-
-
-
-
-
+            case "S":
+                var cambioSentido = new ElementoEstatico(imagenes.cambio_sentido,x,y);
+                cambioSentido.y = cambioSentido.y - cambioSentido.alto/2;
+                this.cambiosSentido.push(cambioSentido);
+                break;
+            case "P":
+                var pincho = new ElementoEstatico(imagenes.pincho,x,y);
+                pincho.y = pincho.y - pincho.alto/2;
+                this.pinchos.push(pincho);
+                break;
         }
     }
     calcularPulsaciones(pulsaciones){

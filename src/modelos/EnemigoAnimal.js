@@ -60,6 +60,10 @@ class EnemigoAnimal extends Modelo {
         }
     }
 
+    cambiarSentidoAnimacion(){
+
+    }
+
 
 
 

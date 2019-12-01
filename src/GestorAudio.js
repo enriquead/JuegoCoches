@@ -3,7 +3,8 @@ musicaAmbiente.loop = true;
 
 var efectos = {
     explosion : "res/explosion.mp3",
-    resbalar : "res/Reverse_Sine_Modulated.wav"
+    resbalar : "res/Reverse_Sine_Modulated.wav",
+    goal : "res/goal.mp3"
     }
 
 

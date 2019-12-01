@@ -28,7 +28,11 @@ var imagenes = {
     has_perdido: "res/has_perdido.png",
     victoria:"res/victoria.png",
     bomba: "res/bomba_normal.png",
-    lata: "res/lata.png"
+    lata: "res/lata.png",
+    pincho: "res/pincho_1.png",
+    cambio_sentido: "res/unoCard.png",
+    rectilineo_izda: "res/animacion_cani_izquierda.png",
+    diagonal_izda: "res/animacion_coche_izquierda.png"
 };
 
 var rutasImagenes = Object.values(imagenes);

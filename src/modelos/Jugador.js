@@ -12,11 +12,19 @@ class Jugador extends Modelo {
         this.vidas = 3;
         this.puntos = 0;
         this.tiempoInvulnerable = 0;
+        this.confuso = false;
+        this.tiempoConfuso = 0;
     }
 
     actualizar(){
         if (this.tiempoInvulnerable > 0 ){
             this.tiempoInvulnerable --;
+        }
+        if (this.tiempoConfuso > 0){
+            this.tiempoConfuso --;
+            if(this.tiempoConfuso <=0){
+                this.confuso =false;
+            }
         }
         this.animacion.actualizar();
         this.x = this.x + this.vx;
@@ -31,6 +39,9 @@ class Jugador extends Modelo {
     }
 
     moverY(direccion){
+        if(this.confuso){
+            direccion *=-1;
+        }
         this.vy = direccion * 4;
     }
 
@@ -53,6 +64,11 @@ class Jugador extends Modelo {
                 this.tiempoInvulnerable = 100;
             }
         }
+    }
+
+    pinchado (){
+        this.confuso = true;
+        this.tiempoConfuso = 100;
     }
 
 

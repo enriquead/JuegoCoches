@@ -7,6 +7,8 @@ class EnemigoRectilineo extends Modelo {
             this.ancho, this.alto, 5, 6);
         this.aExplosion = new Animacion(imagenes.animacion_crash,this.ancho,
             this.alto,5,6,this.finAnimacionMorir.bind(this));
+        this.aMoverInversa = new Animacion(imagenes.rectilineo_izda,
+            this.ancho, this.alto, 5, 6);
 
         // Ref a la animación actual
         this.animacion = this.aMover;
@@ -19,7 +21,7 @@ class EnemigoRectilineo extends Modelo {
         this.animacion.actualizar();
         switch (this.estado){
             case estados.moviendo:
-                this.animacion = this.aMover;
+                this.animacion = this.animacion;
                 break;
             case estados.muriendo:
                 this.animacion = this.aExplosion;
@@ -44,8 +46,15 @@ class EnemigoRectilineo extends Modelo {
             this.estado = estados.muriendo;
         }
     }
+    cambiarSentidoAnimacion(){
+        if(this.estado == estados.moviendo && this.animacion == this.aMover){
+            this.animacion = this.aMoverInversa;
+        }
+        else if(this.estado == estados.moviendo && this.animacion == this.aMoverInversa){
+            this.animacion = this.aMover;
+        }
 
-
+    }
 
 
 }

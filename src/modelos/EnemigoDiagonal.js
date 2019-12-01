@@ -7,8 +7,12 @@ class EnemigoDiagonal extends Modelo {
             this.ancho, this.alto, 5, 6);
         this.aExplosion = new Animacion(imagenes.animacion_crash,this.ancho,
             this.alto,5,6,this.finAnimacionMorir.bind(this));
+        this.aMoverInversa = new Animacion(imagenes.diagonal_izda,
+            this.ancho, this.alto, 5, 6);
+
         // Ref a la animación actual
         this.animacion = this.aMover;
+
 
         this.vy = 2;
         this.vx = 3;
@@ -18,7 +22,7 @@ class EnemigoDiagonal extends Modelo {
         this.animacion.actualizar();
         switch (this.estado){
             case estados.moviendo:
-                this.animacion = this.aMover;
+                this.animacion = this.animacion;
                 break;
             case estados.muriendo:
                 this.animacion = this.aExplosion;
@@ -52,6 +56,17 @@ class EnemigoDiagonal extends Modelo {
         if ( this.estado != estados.muriendo ){
             this.estado = estados.muriendo;
         }
+    }
+
+    cambiarSentidoAnimacion(){
+        console.log("Cambiando animacion");
+        if(this.estado == estados.moviendo && this.animacion == this.aMover){
+            this.animacion = this.aMoverInversa;
+        }
+        else if(this.estado == estados.moviendo && this.animacion == this.aMoverInversa){
+            this.animacion = this.aMover;
+        }
+
     }
 
 
