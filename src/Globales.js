@@ -17,5 +17,5 @@ tipoPulsacion.inicio = 1;
 tipoPulsacion.mantener = 2;
 
 
-let nivelActual = 2;
+let nivelActual = 0;
 const nivelMaximo = 2;

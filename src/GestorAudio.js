@@ -13,7 +13,7 @@ var efectos = {
 
 
 function reproducirMusica() {
-   // musicaAmbiente.play();
+    musicaAmbiente.play();
 }
 
 function pararMusica() {

@@ -70,14 +70,18 @@ class GameLayer extends Layer {
         for (let i=0; i < this.enemigosDestructores.length; i++){
             this.enemigosDestructores[i].actualizar();
         }
-        // Colisiones
+        this.calcularColisiones();
+
+
+    }
+    calcularColisiones(){
         for (let i=0; i < this.enemigosDestructores.length; i++){
             if ( this.jugador.colisiona(this.enemigosDestructores[i]) &&
                 this.enemigosDestructores[i].estado == estados.moviendo){
-                    this.pausa = true;
-                    this.mensaje = this.mensaje = new Boton(imagenes.has_perdido,480/2,320/2);
-                    reproducirEfecto(efectos.explosion);
-                    this.iniciar();
+                this.pausa = true;
+                this.mensaje = this.mensaje = new Boton(imagenes.has_perdido,480/2,320/2);
+                reproducirEfecto(efectos.explosion);
+                this.iniciar();
             }
         }
         for (let i=0; i < this.oilPuddles.length; i++){
@@ -101,16 +105,16 @@ class GameLayer extends Layer {
                     this.enemigosDestructores[i]!== this.enemigosDestructores[j] &&
                     this.enemigosDestructores[j].estado == estados.moviendo
                     &&  this.enemigosDestructores[i].estado == estados.moviendo){
-                        this.enemigosDestructores[i].vy *= -1;
-                        this.enemigosDestructores[i].cambiarAnimacionEjeY();
-                        //Para evitar enganchones con coches que circulan en linea recta, si no quedarían enganchados
-                        // Ya que cambiaría su velocidad en el eje Y constantemente (siempre en colisión)
-                        if(this.enemigosDestructores[i] instanceof EnemigoAnimal || this.enemigosDestructores[i] instanceof EnemigoDiagonal){
-                            if(this.enemigosDestructores[i].vy >0)
-                                this.enemigosDestructores[i].y+=1;
-                            else
-                                this.enemigosDestructores[i].y-=1;
-                        }
+                    this.enemigosDestructores[i].vy *= -1;
+                    this.enemigosDestructores[i].cambiarAnimacionEjeY();
+                    //Para evitar enganchones con coches que circulan en linea recta, si no quedarían enganchados
+                    // Ya que cambiaría su velocidad en el eje Y constantemente (siempre en colisión)
+                    if(this.enemigosDestructores[i] instanceof EnemigoAnimal || this.enemigosDestructores[i] instanceof EnemigoDiagonal){
+                        if(this.enemigosDestructores[i].vy >0)
+                            this.enemigosDestructores[i].y+=1;
+                        else
+                            this.enemigosDestructores[i].y-=1;
+                    }
                 }
             }
         }
@@ -171,7 +175,6 @@ class GameLayer extends Layer {
                 i = i-1;
             }
         }
-
 
     }
     calcularScroll(){
