@@ -30,13 +30,13 @@ class EnemigoAnimal extends EnemigoBase {
         // Evitar que se salga de pantalla
         if(this.y - this.alto/2 < 320*0.1){
             //Para evitar enganchones
-            this.y +=1;
+            this.y +=5;
             this.vy = - (this.vy);
             this.cambiarAnimacionEjeY();
         }
         if(this.y + this.alto/2 > 320){
             //Para evitar enganchones
-            this.y -=1;
+            this.y -=5;
             this.vy = - (this.vy);
             this.cambiarAnimacionEjeY();
         }
