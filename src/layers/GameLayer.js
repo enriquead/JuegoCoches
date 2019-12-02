@@ -274,7 +274,6 @@ class GameLayer extends Layer {
                 break;
             case "M":
                 this.meta = new ElementoEstatico(imagenes.meta, x,y);
-                //this.meta.y = this.meta.y - this.meta.alto/2;
                 break;
             case "O":
                 var oilPuddle = new ElementoEstatico(imagenes.aceite,x,y);
