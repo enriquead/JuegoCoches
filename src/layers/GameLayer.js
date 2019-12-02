@@ -116,6 +116,7 @@ class GameLayer extends Layer {
         }
         for (let i=0; i < this.vidasExtra.length; i++){
             if ( this.jugador.colisiona(this.vidasExtra[i])){
+                reproducirEfecto(efectos.vida);
                 this.jugador.vidas++;
                 this.vidas.valor = this.jugador.vidas;
                 this.vidasExtra.splice(i,1);
@@ -124,6 +125,7 @@ class GameLayer extends Layer {
         }
         for (let i=0; i < this.latas.length; i++){
             if ( this.jugador.colisiona(this.latas[i])){
+                reproducirEfecto(efectos.lata);
                 this.jugador.puntos++;
                 this.puntos.valor = this.jugador.puntos;
                 this.latas.splice(i,1);
@@ -132,6 +134,7 @@ class GameLayer extends Layer {
         }
         for (let i=0; i < this.pinchos.length; i++){
             if ( this.jugador.colisiona(this.pinchos[i])){
+                reproducirEfecto(efectos.pinchazo);
                 this.jugador.pinchado();
                 this.pinchos.splice(i,1);
                 i = i-1;
@@ -139,6 +142,7 @@ class GameLayer extends Layer {
         }
         for (let i=0; i < this.cambiosSentido.length; i++){
             if ( this.jugador.colisiona(this.cambiosSentido[i])){
+                reproducirEfecto(efectos.swap);
                 for(let j=0;j<this.enemigosDestructores.length;j++){
                     this.enemigosDestructores[j].vx *=-1;
                     this.enemigosDestructores[j].cambiarSentidoAnimacion();
