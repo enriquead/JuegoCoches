@@ -64,26 +64,47 @@ class GameLayer extends Layer {
             this.iniciar();
         }
 
-        this.fondo.vx = -7;
+        this.fondo.vx = -30;
         this.fondo.actualizar();
         this.jugador.actualizar();
         for (let i=0; i < this.enemigosDestructores.length; i++){
             this.enemigosDestructores[i].actualizar();
+        }
+        //Eliminar enemigos muertos
+        for (let i=0; i < this.enemigosDestructores.length; i++){
+            if ( this.enemigosDestructores[i] != null &&
+                this.enemigosDestructores[i].estado == estados.muerto ) {
+                this.enemigosDestructores.splice(i, 1);
+                i = i-1;
+            }
         }
         this.calcularColisiones();
 
 
     }
     calcularColisiones(){
-        for (let i=0; i < this.enemigosDestructores.length; i++){
-            if ( this.jugador.colisiona(this.enemigosDestructores[i]) &&
-                this.enemigosDestructores[i].estado == estados.moviendo){
+        this.colisionJugadorEnemigoDestructor();
+        this.colisionJugadorOilPuddle();
+        this.colisionEntreEnemigos();
+        this.colisionJugadorVida();
+        this.colisionJugadorLata();
+        this.colisionJugadorPinchos();
+        this.colisionJugadorCambioSentido();
+        this.colisionJugadorBomba();
+    }
+
+    colisionJugadorEnemigoDestructor(){
+        for (let i=0; i < this.enemigosDestructores.length; i++) {
+            if (this.jugador.colisiona(this.enemigosDestructores[i]) &&
+                this.enemigosDestructores[i].estado == estados.moviendo) {
                 this.pausa = true;
-                this.mensaje = this.mensaje = new Boton(imagenes.has_perdido,480/2,320/2);
+                this.mensaje = this.mensaje = new Boton(imagenes.has_perdido, 480 / 2, 320 / 2);
                 reproducirEfecto(efectos.explosion);
                 this.iniciar();
             }
         }
+    }
+    colisionJugadorOilPuddle(){
         for (let i=0; i < this.oilPuddles.length; i++){
             if ( this.jugador.colisiona(this.oilPuddles[i]) && this.jugador.tiempoInvulnerable<=0){
                 reproducirEfecto(efectos.resbalar);
@@ -99,6 +120,8 @@ class GameLayer extends Layer {
 
             }
         }
+    }
+    colisionEntreEnemigos(){
         for (let i=0; i < this.enemigosDestructores.length; i++){
             for  (var j=0; j < this.enemigosDestructores.length; j++){
                 if ( this.enemigosDestructores[i].colisiona(this.enemigosDestructores[j]) &&
@@ -118,6 +141,8 @@ class GameLayer extends Layer {
                 }
             }
         }
+    }
+    colisionJugadorVida(){
         for (let i=0; i < this.vidasExtra.length; i++){
             if ( this.jugador.colisiona(this.vidasExtra[i])){
                 reproducirEfecto(efectos.vida);
@@ -127,6 +152,8 @@ class GameLayer extends Layer {
                 i = i-1;
             }
         }
+    }
+    colisionJugadorLata(){
         for (let i=0; i < this.latas.length; i++){
             if ( this.jugador.colisiona(this.latas[i])){
                 reproducirEfecto(efectos.lata);
@@ -136,6 +163,8 @@ class GameLayer extends Layer {
                 i = i-1;
             }
         }
+    }
+    colisionJugadorPinchos(){
         for (let i=0; i < this.pinchos.length; i++){
             if ( this.jugador.colisiona(this.pinchos[i])){
                 reproducirEfecto(efectos.pinchazo);
@@ -144,6 +173,8 @@ class GameLayer extends Layer {
                 i = i-1;
             }
         }
+    }
+    colisionJugadorCambioSentido(){
         for (let i=0; i < this.cambiosSentido.length; i++){
             if ( this.jugador.colisiona(this.cambiosSentido[i])){
                 reproducirEfecto(efectos.swap);
@@ -156,6 +187,8 @@ class GameLayer extends Layer {
                 i = i-1;
             }
         }
+    }
+    colisionJugadorBomba(){
         for (let i=0; i < this.bombas.length; i++){
             if ( this.bombas[i] != null && this.jugador.colisiona(this.bombas[i])) {
                 reproducirEfecto(efectos.explosion);
@@ -168,14 +201,6 @@ class GameLayer extends Layer {
                 i = i-1;
             }
         }
-        for (let i=0; i < this.enemigosDestructores.length; i++){
-            if ( this.enemigosDestructores[i] != null &&
-                this.enemigosDestructores[i].estado == estados.muerto ) {
-                this.enemigosDestructores.splice(i, 1);
-                i = i-1;
-            }
-        }
-
     }
     calcularScroll(){
         this.scrollX = this.jugador.x -200;
